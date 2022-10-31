@@ -1,0 +1,7 @@
+zavrsnirad\model\Proizvod.class
+zavrsnirad\util\PocetniInsert.class
+zavrsnirad\model\Entitet.class
+zavrsnirad\model\Rezervacija.class
+zavrsnirad\model\Zaposlenik.class
+zavrsnirad\util\HibernateUtil.class
+zavrsnirad\model\ProizvodRezervacije.class
