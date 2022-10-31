@@ -5,7 +5,10 @@
 package zavrsnirad.view;
 
 import com.github.lgooddatepicker.components.DatePickerSettings;
+import com.github.lgooddatepicker.components.DateTimePicker;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
@@ -102,7 +105,7 @@ public class ProzorRezervacija extends javax.swing.JFrame {
         cmbZaposlenik = new javax.swing.JComboBox<>();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        dpDatumDolaska = new com.github.lgooddatepicker.components.DatePicker();
+        dpDatumDolaska = new com.github.lgooddatepicker.components.DateTimePicker();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -212,9 +215,8 @@ public class ProzorRezervacija extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(dpDatumDolaska, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(60, 60, 60))))
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING))
+                                .addGap(112, 112, 112))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -231,7 +233,10 @@ public class ProzorRezervacija extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnDodaj)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnObrisi)))
+                        .addComponent(btnObrisi))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(dpDatumDolaska, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -268,7 +273,7 @@ public class ProzorRezervacija extends javax.swing.JFrame {
                 .addComponent(txtPrezime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
                 .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(12, 12, 12)
                 .addComponent(dpDatumDolaska, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel9)
@@ -510,7 +515,7 @@ public class ProzorRezervacija extends javax.swing.JFrame {
     private javax.swing.JButton btnPromjeni;
     private javax.swing.JButton btnTrazi;
     private javax.swing.JComboBox<Zaposlenik> cmbZaposlenik;
-    private com.github.lgooddatepicker.components.DatePicker dpDatumDolaska;
+    private com.github.lgooddatepicker.components.DateTimePicker dpDatumDolaska;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -538,15 +543,25 @@ public class ProzorRezervacija extends javax.swing.JFrame {
     private void popuniView() {
         var e =obradaRezervacija.getEntitet();
         
-        dpDatumDolaska.setText(e.getDolazakRezervacije().toString());
+        //dpDatumDolaska.setText(e.getDolazakRezervacije().toString());
         txtIme.setText(e.getIme());
         txtPrezime.setText(e.getPrezime());
         txtEmail.setText(e.getEmail());
         txtBrojLjudi.setText(e.getBrojLjudi().toString());
+         //Date input = e.getDolazakRezervacije();
+        /*LocalDate date = input.toInstant()
+                .atZone(ZoneId.systemDefault()).toLocalDate();
+        dpDatumDolaska.setDate(date);*/
+        
          Date input = e.getDolazakRezervacije();
+
         LocalDate date = input.toInstant()
                 .atZone(ZoneId.systemDefault()).toLocalDate();
-        dpDatumDolaska.setDate(date);
+        LocalTime time = input.toInstant()
+                .atZone(ZoneId.systemDefault()).toLocalTime();
+        dpDatumDolaska.setDateTimePermissive(LocalDateTime.of(date, time));
+        
+        
         
         cmbZaposlenik.setSelectedItem(e.getZaposlenik());
         
@@ -572,13 +587,23 @@ public class ProzorRezervacija extends javax.swing.JFrame {
             s.setBrojLjudi(10);
         }
         
-         s.setDolazakRezervacije(dpDatumDolaska.getDate() != null
+        /* s.setDolazakRezervacije(dpDatumDolaska.getDate() != null
                 ? Date.from(dpDatumDolaska.getDate()
                         .atStartOfDay()
                         .atZone(ZoneId.systemDefault())
                                  .toInstant()
                 ) : null
-        );
+        );*/
+        
+        
+        
+        if (dpDatumDolaska.getDatePicker() != null) {
+            LocalDateTime ldt = LocalDateTime.of(dpDatumDolaska.getDatePicker().getDate(),
+                    dpDatumDolaska.getTimePicker().getTime());
+            s.setDolazakRezervacije(Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant()));
+        } else {
+            s.setDolazakRezervacije(null);
+        }
          
          
          s.setZaposlenik((Zaposlenik) cmbZaposlenik.getSelectedItem());
@@ -601,17 +626,20 @@ public class ProzorRezervacija extends javax.swing.JFrame {
 
     private void postavke() {
         lstDolazak.setModel(new DefaultListModel<>());
-        prilagodiDatepicker();
+        prilagodiDatepicker(dpDatumDolaska);
         ucitajZaposlenike();
     }
 
-    private void prilagodiDatepicker() {
+    private void prilagodiDatepicker(DateTimePicker dtp) {
         DatePickerSettings dps
                 = new DatePickerSettings(new Locale("hr", "HR"));
         dps.setFormatForDatesCommonEra(Pomocno.FORMAT_DATUMA);
         dps.setTranslationClear("Očisti");
         dps.setTranslationToday("Danas");
-        dpDatumDolaska.setSettings(dps);
+        dtp.getDatePicker().setSettings(dps);
+        dtp.getTimePicker().setLocale(new Locale("hr", "HR"));
+        dtp.getTimePicker().getSettings().setFormatForDisplayTime("HH:mm");
+        dtp.getTimePicker().getSettings().setFormatForMenuTimes("HH:mm");
     }
 
     private void ucitajZaposlenike() {

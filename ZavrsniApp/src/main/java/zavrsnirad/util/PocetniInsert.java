@@ -62,7 +62,7 @@ public class PocetniInsert {
         Proizvod p = new Proizvod();
         p.setNaziv(faker.food().dish());
         p.setVrsta(faker.beer().style());
-        p.setKolicina(Pomocno.randomKolicina(0, 1100));
+        //p.setKolicina(Pomocno.randomKolicina(0, 1100));
         p.setCijena(Pomocno.randomKolicina(0,150));
        /*ProizvodRezervacije pr;
         pr=new ProizvodRezervacije();

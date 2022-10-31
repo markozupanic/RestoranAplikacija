@@ -11,7 +11,7 @@ public class Proizvod extends Entitet {
 	
 	private String vrsta;
 	private String naziv;
-	private Integer kolicina;
+	//private Integer kolicina;
 	private Integer cijena;
 	
 	@OneToMany(mappedBy = "proizvod")
@@ -21,7 +21,7 @@ public class Proizvod extends Entitet {
         super(sifra);
         this.vrsta = vrsta;
         this.naziv = naziv;
-        this.kolicina = kolicina;
+        //this.kolicina = kolicina;
         this.cijena = cijena;
     }
 
@@ -61,12 +61,12 @@ public class Proizvod extends Entitet {
 	public void setNaziv(String naziv) {
 		this.naziv = naziv;
 	}
-	public Integer getKolicina() {
+	/*public Integer getKolicina() {
 		return kolicina;
 	}
 	public void setKolicina(Integer kolicina) {
 		this.kolicina = kolicina;
-	}
+	}*/
 	public Integer getCijena() {
 		return cijena;
 	}
